@@ -1,34 +1,21 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 public class Test {
 
 	public static void main(String[] args) {
-		List<Integer> linkedList = new LinkedList<Integer>();
-		List<Integer> arrayList = new ArrayList<Integer>();
+		MyLinkedList myLinkedList = new MyLinkedList();
+		myLinkedList.add(1);
+		myLinkedList.add(2);
+		myLinkedList.add(3);
+		myLinkedList.add(4);
+		myLinkedList.add(10);
 		
-		mesureTime(arrayList);
+		System.out.println(myLinkedList);
 		
-		mesureTime(linkedList);
+		myLinkedList.remove(2);
+		System.out.println(myLinkedList);
 		
+		myLinkedList.remove(0);
+		System.out.println(myLinkedList);
 	}
-	
-	
-	private static void mesureTime(List<Integer> list) {
-		
-		long start = System.currentTimeMillis();
-		
-		for (int i = 0; i < 100000; i++) {
-			list.add(0, i);
-		}
-		
-		
-		long end = System.currentTimeMillis();
-		
-		System.out.println(end - start);
-	}
-
 }
