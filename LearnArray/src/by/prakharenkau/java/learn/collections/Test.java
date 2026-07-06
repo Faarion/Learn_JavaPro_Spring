@@ -1,37 +1,42 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Test {
 
 	public static void main(String[] args) {
-		Map<Integer, String> hashMap = new HashMap<Integer, String>();
-		Map<Integer, String> linkedHashMap = new LinkedHashMap<Integer, String>();
-		Map<Integer, String> treeMap = new TreeMap<Integer, String>();
+		Set<Integer> set1 = new HashSet<Integer>();
 		
-		System.out.println("Hash map:");
-		testMap(hashMap);
+		set1.add(0);
+		set1.add(1);
+		set1.add(2);
+		set1.add(3);
+		set1.add(4);
+		set1.add(5);
 		
-		System.out.println("\nLinkedHashMap");
-		testMap(linkedHashMap);
+		Set<Integer> set2 = new HashSet<Integer>();
 		
-		System.out.println("\nTreeMap");
-		testMap(treeMap);
-	}
-	
-	public static void testMap(Map<Integer, String> map) {
-		map.put(39, "Bob");
-		map.put(12, "Mike");
-		map.put(78, "Tom");
-		map.put(0, "Tim");
-		map.put(1500, "Lewis");
-		map.put(7, "Bob");
+		set2.add(2);
+		set2.add(3);
+		set2.add(4);
+		set2.add(5);
+		set2.add(6);
+		set2.add(7);
 		
-		for (Map.Entry<Integer, String> entry : map.entrySet()) {
-			System.out.println(entry.getKey() + " : " + entry.getValue());
-		}
+		//union - объединение множеств
+		Set<Integer> union = new HashSet<Integer>(set1);
+		union.addAll(set2);
+		System.out.println(union);
+		
+		//intersection - пересечение множеств
+		Set<Integer> intersection = new HashSet<Integer>(set1);
+		intersection.retainAll(set2);
+		System.out.println(intersection);
+		
+		//difference - разность множеств
+		Set<Integer> difference = new HashSet<Integer>(set1);
+		difference.removeAll(set2);
+		System.out.println(difference);
 	}
 }
