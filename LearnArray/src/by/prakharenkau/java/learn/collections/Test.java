@@ -1,37 +1,47 @@
 package by.prakharenkau.java.learn.collections;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Test {
 
 	public static void main(String[] args) {
-		Map<Integer, String> hashMap = new HashMap<Integer, String>();
-		Map<Integer, String> linkedHashMap = new LinkedHashMap<Integer, String>();
-		Map<Integer, String> treeMap = new TreeMap<Integer, String>();
+		Set<String> hashSet = new HashSet<String>();
+		Set<String> linkedHashSet = new LinkedHashSet<String>();
+		Set<String> treeSet = new TreeSet<String>();
 		
-		System.out.println("Hash map:");
-		testMap(hashMap);
 		
-		System.out.println("\nLinkedHashMap");
-		testMap(linkedHashMap);
+		System.out.println("Hash set:");
+		testMap(hashSet);
 		
-		System.out.println("\nTreeMap");
-		testMap(treeMap);
+		System.out.println("\nLinkedHashSet:");
+		testMap(linkedHashSet);
+		
+		System.out.println("\nTreeSet:");
+		testMap(treeSet);
 	}
 	
-	public static void testMap(Map<Integer, String> map) {
-		map.put(39, "Bob");
-		map.put(12, "Mike");
-		map.put(78, "Tom");
-		map.put(0, "Tim");
-		map.put(1500, "Lewis");
-		map.put(7, "Bob");
+	public static void testMap(Set<String> set) {
+		set.add("Mike");
+		set.add("George");
+		set.add("Donald");
+		set.add("Katy");
+		set.add("Anna");
+		set.add("Tom");
 		
-		for (Map.Entry<Integer, String> entry : map.entrySet()) {
-			System.out.println(entry.getKey() + " : " + entry.getValue());
+		for (String str: set) {
+			System.out.println(str);
 		}
+		
+		System.out.println("Contains \"Tom\": " + set.contains("Tom"));
+		System.out.println("Contains \"Tim\": " + set.contains("Tim"));
+		
+		System.out.println("Empty set: " + set.isEmpty());
 	}
 }
