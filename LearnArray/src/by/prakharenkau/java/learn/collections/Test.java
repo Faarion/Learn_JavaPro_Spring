@@ -1,47 +1,42 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class Test {
 
 	public static void main(String[] args) {
-		Set<String> hashSet = new HashSet<String>();
-		Set<String> linkedHashSet = new LinkedHashSet<String>();
-		Set<String> treeSet = new TreeSet<String>();
+		Set<Integer> set1 = new HashSet<Integer>();
 		
+		set1.add(0);
+		set1.add(1);
+		set1.add(2);
+		set1.add(3);
+		set1.add(4);
+		set1.add(5);
 		
-		System.out.println("Hash set:");
-		testMap(hashSet);
+		Set<Integer> set2 = new HashSet<Integer>();
 		
-		System.out.println("\nLinkedHashSet:");
-		testMap(linkedHashSet);
+		set2.add(2);
+		set2.add(3);
+		set2.add(4);
+		set2.add(5);
+		set2.add(6);
+		set2.add(7);
 		
-		System.out.println("\nTreeSet:");
-		testMap(treeSet);
-	}
-	
-	public static void testMap(Set<String> set) {
-		set.add("Mike");
-		set.add("George");
-		set.add("Donald");
-		set.add("Katy");
-		set.add("Anna");
-		set.add("Tom");
+		//union - объединение множеств
+		Set<Integer> union = new HashSet<Integer>(set1);
+		union.addAll(set2);
+		System.out.println(union);
 		
-		for (String str: set) {
-			System.out.println(str);
-		}
+		//intersection - пересечение множеств
+		Set<Integer> intersection = new HashSet<Integer>(set1);
+		intersection.retainAll(set2);
+		System.out.println(intersection);
 		
-		System.out.println("Contains \"Tom\": " + set.contains("Tom"));
-		System.out.println("Contains \"Tim\": " + set.contains("Tim"));
-		
-		System.out.println("Empty set: " + set.isEmpty());
+		//difference - разность множеств
+		Set<Integer> difference = new HashSet<Integer>(set1);
+		difference.removeAll(set2);
+		System.out.println(difference);
 	}
 }
