@@ -1,34 +1,27 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Test {
 
 	public static void main(String[] args) {
-		List<Integer> linkedList = new LinkedList<Integer>();
-		List<Integer> arrayList = new ArrayList<Integer>();
+		Map<Integer, String> map = new HashMap<Integer, String>();
 		
-		mesureTime(arrayList);
+		map.put(1, "One");
+		map.put(2, "Two");
+		map.put(3, "Three");
+		map.put(3, "Три");
 		
-		mesureTime(linkedList);
+//		System.out.println(map);
+//		
+//		System.out.println(map.get(1));
+//		System.out.println(map.get(10));
 		
-	}
-	
-	
-	private static void mesureTime(List<Integer> list) {
-		
-		long start = System.currentTimeMillis();
-		
-		for (int i = 0; i < 100000; i++) {
-			list.add(0, i);
+		for (Map.Entry<Integer, String> entry : map.entrySet()) {
+			System.out.println(entry.getKey() + " : " + entry.getValue());
 		}
-		
-		
-		long end = System.currentTimeMillis();
-		
-		System.out.println(end - start);
 	}
-
+	
+	
 }
