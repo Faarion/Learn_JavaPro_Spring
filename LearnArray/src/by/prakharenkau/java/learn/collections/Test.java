@@ -1,70 +1,49 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Test {
 
 	public static void main(String[] args) {
-		List <Person> peopleList = new ArrayList<Person>();
-		Set<Person> peopleSet = new TreeSet<Person>();
+		Person person1 = new Person(1);
+		Person person2 = new Person(2);
+		Person person3 = new Person(3);
+		Person person4 = new Person(4);
 		
-		addElement(peopleList);
-		addElement(peopleSet);
+//		Queue<Person> people = new LinkedList<Person>();
+		Queue<Person> people = new ArrayBlockingQueue<Person>(3);
 		
-		System.out.println(peopleList);
-		System.out.println(peopleSet);
-	}
-	
-	private static void addElement(Collection<Person> collection) {
-		collection.add(new Person(4, "George "));
-		collection.add(new Person(2, "Kate"));
-		collection.add(new Person(1, "Bob"));
-		collection.add(new Person(3, "Tom"));
+		people.add(person3);
+		people.add(person2);
+		
+		System.out.println(people.offer(person4));
+		System.out.println(people.offer(person1));
+		
+		System.out.println("Remove:");
+		System.out.println(people.remove());
+		System.out.println("Peek");
+		System.out.println(people.peek());
+		
+		for (Person person : people) {
+			System.out.println(person);
+		}
+		
 	}
 }
 
-class Person implements Comparable<Person> {
+class Person {
 	private int id;
-	private String name;
-	public Person(int id, String name) {
+
+	public Person(int id) {
 		super();
 		this.id = id;
-		this.name = name;
 	}
+
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", name=" + name + "]";
+		return "Person [id=" + id + "]";
 	}
-	@Override
-	public int compareTo(Person o ) {
-		if (this.getId() > o.getId()) {
-			return 1;
-		} else if (o.getId() > this.getId()) {
-			return -1;
-		}
-		return 0;
-	}	
-	public int getId() {
-		return id;
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(Integer.valueOf(id), name);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Person other = (Person) obj;
-		return id == other.id && Objects.equals(name, other.name);
-	}
+	
+	
 }
