@@ -1,107 +1,34 @@
 package by.prakharenkau.java.learn.collections;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Test {
 
 	public static void main(String[] args) {
-		List<String> animals = new ArrayList<String>();
+		List <Person> peopleList = new ArrayList<Person>();
+		Set<Person> peopleSet = new TreeSet<Person>();
 		
-		animals.add("eliphant");
-		animals.add("dog");
-		animals.add("cat");
-		animals.add("frog");
-		animals.add("bird");
-		animals.add("a");
-		animals.add("ad");
+		addElement(peopleList);
+		addElement(peopleSet);
 		
-		Collections.sort(animals, new StringLengthComparator());
-		
-		System.out.println(animals);
-		
-		List<Integer> numbers = new ArrayList<Integer>();
-		
-		numbers.add(5);
-		numbers.add(0);
-		numbers.add(500);
-		numbers.add(100);
-		
-		//Collections.sort(numbers, new BackwardsIntegerComparator());
-		
-//		Collections.sort(numbers, new Comparator<Integer>() {
-//
-//			@Override
-//			public int compare(Integer arg0, Integer arg1) {
-//				if (arg1 > arg0) {
-//					return 1;
-//				} else if (arg0 > arg1) {
-//					return -1;
-//				}
-//				return 0;
-//			}
-//			
-//		});
-		
-		Collections.sort(numbers, (o1, o2) -> {
-			if (o2 > o1) {
-				return 1;
-			} else if (o1 > o2) {
-				return -1;
-			}
-			return 0;
-		});
-		
-		System.out.println(numbers);
-		
-		List<Person> people = new ArrayList<Person>();
-		people.add(new Person(3, "Mike"));
-		people.add(new Person(1, "Bob"));
-		people.add(new Person(2, "Katy"));
-		
-		Collections.sort(people, (p1, p2) -> {
-			if (p1.getId() > p2.getId()) {
-				return -1;
-			} else if (p2.getId() > p1.getId()) {
-				return 1;
-			}
-			return 0;
-		});
-		
-		System.out.println(people);
-	}
-}
-
-class StringLengthComparator implements Comparator<String> {
-
-	@Override
-	public int compare(String arg0, String arg1) {
-		if (arg0.length() > arg1.length()) {
-			return 1;
-		} else if (arg1.length() > arg0.length()) {
-			return -1;
-		}
-		return 0;
-	}
-}
-
-class 	BackwardsIntegerComparator implements Comparator<Integer> {
-
-	@Override
-	public int compare(Integer arg0, Integer arg1) {
-		if (arg1 > arg0) {
-			return 1;
-		} else if (arg0 > arg1) {
-			return -1;
-		}
-		return 0;
+		System.out.println(peopleList);
+		System.out.println(peopleSet);
 	}
 	
+	private static void addElement(Collection<Person> collection) {
+		collection.add(new Person(4, "George "));
+		collection.add(new Person(2, "Kate"));
+		collection.add(new Person(1, "Bob"));
+		collection.add(new Person(3, "Tom"));
+	}
 }
 
-class Person {
+class Person implements Comparable<Person> {
 	private int id;
 	private String name;
 	public Person(int id, String name) {
@@ -113,7 +40,31 @@ class Person {
 	public String toString() {
 		return "Person [id=" + id + ", name=" + name + "]";
 	}
+	@Override
+	public int compareTo(Person o ) {
+		if (this.getId() > o.getId()) {
+			return 1;
+		} else if (o.getId() > this.getId()) {
+			return -1;
+		}
+		return 0;
+	}	
 	public int getId() {
 		return id;
-	}	
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(Integer.valueOf(id), name);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person other = (Person) obj;
+		return id == other.id && Objects.equals(name, other.name);
+	}
 }
