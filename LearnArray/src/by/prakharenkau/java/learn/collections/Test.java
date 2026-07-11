@@ -1,35 +1,53 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 public class Test {
 
-	public static void main(String[] args) {
-		List<Integer> list = new ArrayList<Integer>();
-		list.add(1);
-		list.add(2);
-		list.add(3);
+	public static void main(String[] args) throws InterruptedException {
+		MyThread myThread = new MyThread();
+		myThread.start();
+		System.out.println("Hello main Thread");
 		
-		Iterator<Integer> iterator = list.iterator();
+		Thread.sleep(1000);
 		
-		//Before Java 5
-		int idx = 0;
-		while(iterator.hasNext()) {
-			System.out.println(iterator.next());
-			if (idx == 1) {
-				iterator.remove();
+		MyThread myThread2 = new MyThread();
+		myThread2.start();
+		
+		Thread thread = new Thread(new Runner());
+		thread.start();
+		
+		System.out.println("I am go to sleep");
+		
+		Thread.sleep(3000);
+		System.out.println("I am wake!!!");
+	}
+}
+
+class Runner implements Runnable {
+
+	@Override
+	public void run() {
+		for(int i = 0; i < 10; i++) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			idx++;
+			System.out.println("!!!!!!Hello my thread: " + i + "!!!!!!");
 		}
-		
-	 System.out.println(list);
-		
-		//Java 5
-		for (Integer x : list) {
-			System.out.println(x);
+	}
+	
+}
+
+class MyThread extends Thread {
+	
+	public void run() {
+		for(int i = 0; i < 10; i++) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println("Hello my thread: " + i);
 		}
-		
 	}
 }
