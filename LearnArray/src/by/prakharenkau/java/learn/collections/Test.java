@@ -1,24 +1,34 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Test {
 
 	public static void main(String[] args) {
-		Stack<Integer> stack = new Stack<Integer>();
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
 		
-		stack.push(5);
-		stack.push(3);
-		stack.push(1);
+		Iterator<Integer> iterator = list.iterator();
 		
-//		System.out.println(stack.pop());
-//		System.out.println(stack.pop());
-//		System.out.println(stack.peek());
-//		System.out.println(stack.peek());
-//		System.out.println(stack.empty());
+		//Before Java 5
+		int idx = 0;
+		while(iterator.hasNext()) {
+			System.out.println(iterator.next());
+			if (idx == 1) {
+				iterator.remove();
+			}
+			idx++;
+		}
 		
-		while (!stack.empty()) {
-			System.out.println(stack.pop());
+	 System.out.println(list);
+		
+		//Java 5
+		for (Integer x : list) {
+			System.out.println(x);
 		}
 		
 	}
