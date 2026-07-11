@@ -1,53 +1,39 @@
 package by.prakharenkau.java.learn.collections;
 
+import java.util.Scanner;
+
 public class Test {
 
 	public static void main(String[] args) throws InterruptedException {
 		MyThread myThread = new MyThread();
 		myThread.start();
-		System.out.println("Hello main Thread");
 		
-		Thread.sleep(1000);
+		Scanner scanner = new Scanner(System.in);
+		scanner.nextLine();
 		
-		MyThread myThread2 = new MyThread();
-		myThread2.start();
+		myThread.shutdown();
 		
-		Thread thread = new Thread(new Runner());
-		thread.start();
-		
-		System.out.println("I am go to sleep");
-		
-		Thread.sleep(3000);
-		System.out.println("I am wake!!!");
 	}
-}
-
-class Runner implements Runnable {
-
-	@Override
-	public void run() {
-		for(int i = 0; i < 10; i++) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			System.out.println("!!!!!!Hello my thread: " + i + "!!!!!!");
-		}
-	}
-	
 }
 
 class MyThread extends Thread {
 	
+	private volatile boolean running = true;
+
+	@Override
 	public void run() {
-		for(int i = 0; i < 10; i++) {
+		while(running) {
+			System.out.println("Hello");
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println("Hello my thread: " + i);
 		}
 	}
+	
+	public void shutdown() {
+		this.running = false;
+	}
+	
 }
