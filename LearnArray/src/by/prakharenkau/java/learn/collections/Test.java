@@ -1,47 +1,86 @@
 package by.prakharenkau.java.learn.collections;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Test {
 
 	private int counter = 0;
 	
-	public static void main(String[] args) {
-		Test test = new Test();
-		try {
-			test.doWork();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public static void main(String[] args) throws InterruptedException {
+		Worker worker = new Worker();
+		worker.main();
+	}
+}
+
+class Worker {
+	private Random random = new Random();
+	
+	Object lock1 = new Object();
+	Object lock2 = new Object();
+	
+	private List<Integer> list1 = new ArrayList<Integer>();
+	private List<Integer> list2 = new ArrayList<Integer>();
+	
+	public void addToList1() {
+		synchronized (lock1) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			list1.add(random.nextInt(100));			
 		}
+	}
+	
+	public void addToList2() {
+		synchronized (lock2) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			list2.add(random.nextInt(100));			
+		}
+	}
+	
+	public void work() {
+		for (int i = 0; i < 1000; i++) {
+			addToList1();
+			addToList2();
+		}
+	}
+	
+	public void main() throws InterruptedException {
+		long before = System.currentTimeMillis();
 		
-	}
-	
-	public synchronized void increment() {
-		counter++;
-	}
-	
-	public void doWork() throws InterruptedException {
 		Thread thread1 = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-				for (int i = 0; i < 10000; i++) {
-					increment();				
-				}
+				work();
 			}
 		});
 		Thread thread2 = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-				for (int i = 0; i < 10000; i++) {
-					increment();				}
+				work();
 			}
 		});
+		
 		thread1.start();
 		thread2.start();
 		
 		thread1.join();
 		thread2.join();
 		
-		System.out.println(counter);
+		long after = System.currentTimeMillis();
+		
+		System.out.println("Programm took " + (after - before) + "ms to run");
+		System.out.println("List 1: " + list1.size());
+		System.out.println("List 2: " + list2.size());
 	}
 }
