@@ -1,44 +1,60 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class Test {
 
+	private static BlockingQueue<Integer> queue = new ArrayBlockingQueue<Integer>(12);
 	
 	public static void main(String[] args) throws InterruptedException {
-		ExecutorService executorService = Executors.newFixedThreadPool(2);
+		Thread thread1 = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					produce();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		
-		for (int i = 0; i < 5; i++) {
-			executorService.submit(new Work(i));
-		}
+		Thread thread2 = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					consumer();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		
-		executorService.shutdown();
-		System.out.println("All tasks submites");
+		thread1.start();
+		thread2.start();
 		
-		executorService.awaitTermination(1, TimeUnit.DAYS);
-		
-	}
-}
-
-class Work implements Runnable {
-	private int id;
-
-	public Work(int id) {
-		this.id = id;
-	}
-
-
-	@Override
-	public void run() {
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Work " + id + " was complited!");
+		thread1.join();
+		thread2.join();
 	}
 	
+	private static void produce() throws InterruptedException {
+		Random random = new Random();
+		
+		while (true) {
+			Thread.sleep(1000);
+			queue.put(random.nextInt(100));
+		}
+	}
+	
+	private static void consumer() throws InterruptedException {
+		while (true) {
+			Thread.sleep(2000);
+			System.out.println(queue.take());
+			System.out.println("Queue size is " + queue.size());
+			
+		}
+	}
 }
