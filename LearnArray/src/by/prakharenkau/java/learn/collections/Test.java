@@ -1,20 +1,18 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.Scanner;
 
 public class Test {
-
-	private static BlockingQueue<Integer> queue = new ArrayBlockingQueue<Integer>(12);
 	
 	public static void main(String[] args) throws InterruptedException {
+		WaitAndNotify wn = new WaitAndNotify();
+		
 		Thread thread1 = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				try {
-					produce();
+					wn.produce();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -26,7 +24,7 @@ public class Test {
 			@Override
 			public void run() {
 				try {
-					consumer();
+					wn.consumer();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -39,22 +37,25 @@ public class Test {
 		thread1.join();
 		thread2.join();
 	}
-	
-	private static void produce() throws InterruptedException {
-		Random random = new Random();
-		
-		while (true) {
-			Thread.sleep(1000);
-			queue.put(random.nextInt(100));
+}
+
+class WaitAndNotify {
+	public void produce() throws InterruptedException {
+		synchronized (this) {
+			System.out.println("Producer thread started...");
+			wait();
+			System.out.println("Produser thread resumed...");
 		}
 	}
 	
-	private static void consumer() throws InterruptedException {
-		while (true) {
-			Thread.sleep(2000);
-			System.out.println(queue.take());
-			System.out.println("Queue size is " + queue.size());
-			
+	public void consumer() throws InterruptedException {
+		Thread.sleep(2000);
+		Scanner scanner = new Scanner(System.in);
+		
+		synchronized (this) {
+			System.out.println("Waiting for return key pressed");
+			scanner.nextLine();
+			notify();
 		}
 	}
 }
