@@ -1,53 +1,64 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Test {
 			
 	public static void main(String[] args) throws InterruptedException {
-		CountDownLatch countDownLatch = new CountDownLatch(3);
+		Task task = new Task();
+		Thread thread1 = new Thread(
+				new Runnable() {
+					
+					@Override
+					public void run() {
+						task.firstThread();
+					}
+				});
 		
-		ExecutorService executorService = Executors.newFixedThreadPool(3);
-		for (int i = 0; i < 3; i++) {
-			executorService.submit(new Processor(countDownLatch, i));
-		}
+		Thread thread2 = new Thread(
+				new Runnable() {
+					
+					@Override
+					public void run() {
+						task.secondThread();
+					}
+				});
 		
-		//executorService.shutdown();
+		thread1.start();
+		thread2.start();
 		
-		for (int i = 0; i < 3; i++) {
-			Thread.sleep(1000);
-			countDownLatch.countDown(); 
-		}
+		thread1.join();
+		thread2.join();
 		
+		task.showCounter();
 	}
 }
 
-class Processor implements Runnable {
-	private CountDownLatch countDownLatch;
-	private int id;
+class Task {
+	private int counter;
+	private Lock lock = new ReentrantLock();
 	
-	public Processor(CountDownLatch countDownLatch, int id) {
-		this.countDownLatch = countDownLatch;
-		this.id = id;
+	private void increment() {
+		for (int i = 0; i < 1000; i++) {
+			counter++;
+		}
 	}
-
-	@Override
-	public void run() {
-		try {
-			System.out.println("Start processor id: " + id);
-			Thread.sleep(3000);
-			System.out.println("Finish processor id: " + id);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			countDownLatch.await();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	
+	public void firstThread() {
+		lock.lock();
+		increment();
+		lock.unlock();
+	}
+	
+	public void secondThread() {
+		lock.lock();
+		increment();
+		lock.unlock();
+	}
+	
+	public void showCounter() {
+		System.out.println(counter);
 	}
 	
 }
