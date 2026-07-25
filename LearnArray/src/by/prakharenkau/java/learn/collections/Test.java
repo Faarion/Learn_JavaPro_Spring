@@ -1,64 +1,70 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 public class Test {
 			
 	public static void main(String[] args) throws InterruptedException {
-		Task task = new Task();
-		Thread thread1 = new Thread(
-				new Runnable() {
-					
-					@Override
-					public void run() {
-						task.firstThread();
-					}
-				});
+		ExecutorService executorService = Executors.newFixedThreadPool(200);
+		Connection connection = Connection.getConnection();
 		
-		Thread thread2 = new Thread(
-				new Runnable() {
-					
-					@Override
-					public void run() {
-						task.secondThread();
-					}
-				});
-		
-		thread1.start();
-		thread2.start();
-		
-		thread1.join();
-		thread2.join();
-		
-		task.showCounter();
+		for (int i = 0; i < 200; i++) {
+			executorService.submit(new Runnable() {
+				
+				@Override
+				public void run() {
+					connection.work();
+				}
+			});
+		}
+		executorService.shutdown();
+		executorService.awaitTermination(1, TimeUnit.DAYS);
 	}
 }
 
-class Task {
-	private int counter;
-	private Lock lock = new ReentrantLock();
+class Connection {
+	private static Connection connection = new Connection();
+	private int connectionsCount;
+	private Semaphore semaphore = new Semaphore(10);
 	
-	private void increment() {
-		for (int i = 0; i < 1000; i++) {
-			counter++;
+	private Connection() {
+		
+	}
+	
+	public static Connection getConnection() {
+		return connection;
+	}
+	
+	public void work() {
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		try {
+			doWork();			
+		} finally {
+			semaphore.release();			
 		}
 	}
 	
-	public void firstThread() {
-		lock.lock();
-		increment();
-		lock.unlock();
-	}
-	
-	public void secondThread() {
-		lock.lock();
-		increment();
-		lock.unlock();
-	}
-	
-	public void showCounter() {
-		System.out.println(counter);
+	private void doWork() {
+		synchronized (this) {
+			connectionsCount++;
+			System.out.println(connectionsCount);
+		}
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		synchronized (this) {
+			connectionsCount--;
+		}
 	}
 	
 }
