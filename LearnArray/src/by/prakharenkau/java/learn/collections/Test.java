@@ -1,70 +1,95 @@
 package by.prakharenkau.java.learn.collections;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
 public class Test {
-			
+
 	public static void main(String[] args) throws InterruptedException {
-		ExecutorService executorService = Executors.newFixedThreadPool(200);
-		Connection connection = Connection.getConnection();
-		
-		for (int i = 0; i < 200; i++) {
-			executorService.submit(new Runnable() {
-				
-				@Override
-				public void run() {
-					connection.work();
-				}
-			});
-		}
-		executorService.shutdown();
-		executorService.awaitTermination(1, TimeUnit.DAYS);
+		Runner runner = new Runner();
+
+		Thread thread1 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				runner.firstThread();
+			}
+		});
+
+		Thread thread2 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				runner.secondThread();
+			}
+		});
+
+		thread1.start();
+		thread2.start();
+
+		thread1.join();
+		thread2.join();
+
+		runner.finished();
 	}
 }
 
-class Connection {
-	private static Connection connection = new Connection();
-	private int connectionsCount;
-	private Semaphore semaphore = new Semaphore(10);
-	
-	private Connection() {
-		
+class Runner {
+	private Account account1 = new Account();
+	private Account account2 = new Account();
+
+	public void firstThread() {
+		Random rand = new Random();
+
+		for (int i = 0; i < 10000; i++) {
+			synchronized (account1) {
+				synchronized (account2) {
+					
+					Account.transfer(account1, account2, rand.nextInt(100));
+				}
+			}			
+		}
+
 	}
-	
-	public static Connection getConnection() {
-		return connection;
+
+	public void secondThread() {
+		Random rand = new Random();
+
+		for (int i = 0; i < 10000; i++) {
+			synchronized (account1) {
+				synchronized (account2) {
+
+					Account.transfer(account2, account1, rand.nextInt(100));
+				}
+			}
+		}
+
 	}
-	
-	public void work() {
-		try {
-			semaphore.acquire();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		try {
-			doWork();			
-		} finally {
-			semaphore.release();			
-		}
+
+	public void finished() {
+		System.out.println(account1.getBalance());
+		System.out.println(account2.getBalance());
+		System.out.println("Total balance: " + (account1.getBalance() + account2.getBalance()));
+
 	}
-	
-	private void doWork() {
-		synchronized (this) {
-			connectionsCount++;
-			System.out.println(connectionsCount);
-		}
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		synchronized (this) {
-			connectionsCount--;
-		}
+}
+
+class Account {
+	private int balance = 10000;
+
+	public void deposit(int amount) {
+		balance += amount;
 	}
-	
+
+	public void withdrow(int amount) {
+		balance -= amount;
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+
+	public static void transfer(Account acc1, Account acc2, int amount) {
+		acc1.withdrow(amount);
+		acc2.deposit(amount);
+	}
 }
