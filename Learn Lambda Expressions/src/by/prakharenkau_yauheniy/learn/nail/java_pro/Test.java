@@ -1,48 +1,27 @@
 package by.prakharenkau_yauheniy.learn.nail.java_pro;
 
-import java.sql.ResultSet;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.Arrays;
 
 public class Test {
 	
 	
-	public static void main(String[] args) {
-		ExecutorService executorService = Executors.newFixedThreadPool(1);
+	public static void main(String[] args) {	
+		String a = "Hello.there.hey";
+		String[] words = a.split("\\.");
+		System.out.println("Result 1: " + Arrays.toString(words));
 		
-		Future<Integer> future = executorService.submit(() -> {
-			System.out.println("Starting");
-			Thread.sleep(500);
-			System.out.println("Finished");
-			
-			Random rand = new Random();
-			int randomValue = rand.nextInt(10);
-			if (randomValue < 5) {
-				throw new Exception("Somthing bad happened");
-			}
-			return randomValue;
-		});
+		a = "Hello254354234there645765765hey";
+		words = a.split("\\d+");
+		System.out.println("Result 2: " + Arrays.toString(words));
 		
-		int result = 0;
-		executorService.shutdown();
-		try {
-			result = future.get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			Throwable ex = e.getCause();
-			System.out.println(ex.getMessage());
-		}
-		
-		System.out.println(result);
-		
-		
+		String b = "Hello there heys";
+		b = b.replace(" ", ".");
+		System.out.println("Result 3: " + b);
+
+		b = "Hello213213there342543241heys";
+		String modifiedB1  = b.replaceAll("\\d+", "-");
+		String modifiedB2 = b.replaceFirst("\\d+", "-");
+		System.out.println("Result 3: " + modifiedB1);
+		System.out.println("Result 3: " + modifiedB2);
 	}	
-	
-	public static int calculate() {
-		return 5 + 4;
-	}
 }
