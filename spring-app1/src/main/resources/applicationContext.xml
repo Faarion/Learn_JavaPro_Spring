@@ -26,7 +26,8 @@
     </bean>
     
     <bean id="musicPlayer"
-    	  class="by.prakharenkau.springcourse.MusicPlayer">
+    	  class="by.prakharenkau.springcourse.MusicPlayer"
+    	  scope="prototype">
     	  <property name="musicList">
     	  	<util:list list-class="java.util.ArrayList">
 	    	  	<ref bean="classicalMusicBean" />

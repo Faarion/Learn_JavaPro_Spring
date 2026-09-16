@@ -7,4 +7,8 @@ public class ClassicalMusic implements Music{
 		return "Hungarian Rhapsodi";
 	}
 
+	@Override
+	public String toString() {
+		return "Hungarian Rhapsodi";
+	}
 }
