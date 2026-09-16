@@ -14,7 +14,10 @@
 	<context:property-placeholder location="classpath:musicPlayer.properties"/>
 
     <bean id="classicalMusicBean"
-        class="by.prakharenkau.springcourse.ClassicalMusic">
+        class="by.prakharenkau.springcourse.ClassicalMusic"
+        init-method="doMyInit"
+        destroy-method="doMyDestroy"
+        factory-method="getClassicalMusic">
     </bean>
     
     <bean id="rockMusicBean"
@@ -27,7 +30,9 @@
     
     <bean id="musicPlayer"
     	  class="by.prakharenkau.springcourse.MusicPlayer"
-    	  scope="prototype">
+    	  scope="prototype"
+    	  init-method="doMyInit"
+    	  destroy-method="doMyDestroy">
     	  <property name="musicList">
     	  	<util:list list-class="java.util.ArrayList">
 	    	  	<ref bean="classicalMusicBean" />
