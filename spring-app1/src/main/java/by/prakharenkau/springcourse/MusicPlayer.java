@@ -18,6 +18,14 @@ public class MusicPlayer {
 		}
 	}
 	
+	public void doMyInit() {
+		System.out.println("Initializing musicPlayer");
+	}
+	
+	public void doMyDestroy() {
+		System.out.println("Destroy musicPlayer");
+	}
+	
 	
 
 	@Override
