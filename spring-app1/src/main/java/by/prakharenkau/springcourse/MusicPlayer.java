@@ -17,6 +17,13 @@ public class MusicPlayer {
 			System.out.println("Playing: " + music.getSong());
 		}
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "MusicPlayer [musicList=" + musicList + ", name=" + name + ", volume=" + volume + "]";
+	}
 
 	public String getName() {
 		return name;
