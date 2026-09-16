@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans  xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:context="http://www.springframework.org/schema/context"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util.xsd">
+           
+	<context:property-placeholder location="classpath:musicPlayer.properties"/>
 
-    <bean id="musicBean"
+    <bean id="classicalMusicBean"
         class="by.prakharenkau.springcourse.ClassicalMusic">
+    </bean>
+    
+    <bean id="rockMusicBean"
+        class="by.prakharenkau.springcourse.RockMusic">
+    </bean>
+    
+    <bean id="jazzMusicBean"
+        class="by.prakharenkau.springcourse.JazzMusic">
     </bean>
     
     <bean id="musicPlayer"
     	  class="by.prakharenkau.springcourse.MusicPlayer">
-    	  <constructor-arg ref="musicBean"></constructor-arg>
+    	  <property name="musicList">
+    	  	<util:list list-class="java.util.ArrayList">
+	    	  	<ref bean="classicalMusicBean" />
+	    	  	<ref bean="rockMusicBean" />
+	    	  	<ref bean="jazzMusicBean" />
+	    	 </util:list>
+    	  </property>
+    	  
+		  <property name="name" value="${musicPlayer.name}"></property>
+		  <property name="volume" value="${musicPlayer.volume}"></property>
     </bean>
     
 
