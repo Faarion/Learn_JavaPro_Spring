@@ -56,4 +56,10 @@ public class MusicPlayer {
 	public void setMusicList(List<Music> musicList) {
 		this.musicList = musicList;
 	}
+
+	public void setMusic(Music music) {
+		this.music = music;
+	}
+	
+	
 }
