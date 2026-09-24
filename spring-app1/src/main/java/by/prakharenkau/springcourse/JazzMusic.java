@@ -9,10 +9,4 @@ public class JazzMusic implements Music {
 	public String getSong() {
 		return "La Vie En Rose";
 	}
-	
-	@Override
-	public String toString() {
-		return "La Vie En Rose";
-	}
-
 }

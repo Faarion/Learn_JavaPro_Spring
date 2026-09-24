@@ -15,23 +15,5 @@
 
 
     <context:component-scan base-package="by.prakharenkau.springcourse"/>
-    
-    <bean id="musicPlayer"
-    	  class="by.prakharenkau.springcourse.MusicPlayer"
-    	  scope="prototype"
-    	  init-method="doMyInit"
-    	  destroy-method="doMyDestroy">
-    	  <property name="musicList">
-    	  	<util:list list-class="java.util.ArrayList">
-	    	  	<ref bean="classicalMusicBean" />
-	    	  	<ref bean="rockMusicBean" />
-	    	  	<ref bean="jazzMusicBean" />
-	    	 </util:list>
-    	  </property>
-    	  
-		  <property name="name" value="${musicPlayer.name}"></property>
-		  <property name="volume" value="${musicPlayer.volume}"></property>
-    </bean>
-    
 
 </beans>

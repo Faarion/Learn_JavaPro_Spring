@@ -1,19 +1,34 @@
 package by.prakharenkau.springcourse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class MusicPlayer {
-	private Music music;
 	
-	public MusicPlayer(Music music) {
-		this.music = music;
-	}
+	private ClassicalMusic classicalMusic;
+	private RockMusic rockMusic;
+	private JazzMusic jazzMusic;
 	
-	public void playMusic() {
-		System.out.println(music.getSong());
+	@Autowired
+	public MusicPlayer(ClassicalMusic classicalMusic, RockMusic rockMusic, JazzMusic jazzMusic) {
+		super();
+		this.classicalMusic = classicalMusic;
+		this.rockMusic = rockMusic;
+		this.jazzMusic = jazzMusic;
 	}
 
-	public void setMusic(Music music) {
-		this.music = music;
+	public String playMusic() {
+		return "Playing "  + classicalMusic.getSong();
+//		System.out.println("Playing"  + classicalMusic.getSong());
+//		System.out.println("Playing"  + rockMusic.getSong());
+//		System.out.println("Playing"  + jazzMusic.getSong());
 	}
+
+//	@Autowired
+//	public void setMusic(Music music) {
+//		this.music = music;
+//	}
 	
 	
 }
