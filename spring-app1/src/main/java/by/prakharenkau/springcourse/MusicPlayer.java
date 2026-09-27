@@ -1,34 +1,39 @@
 package by.prakharenkau.springcourse;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MusicPlayer {
 	
-	private ClassicalMusic classicalMusic;
-	private RockMusic rockMusic;
-	private JazzMusic jazzMusic;
-	
+	private Music music1;
+	private Music music2;
+	private Music music3;
+	private Random rand = new Random();
+
 	@Autowired
-	public MusicPlayer(ClassicalMusic classicalMusic, RockMusic rockMusic, JazzMusic jazzMusic) {
+	public MusicPlayer(@Qualifier("classicalMusic") Music music1, 
+			@Qualifier("rockMusic") Music music2,
+			@Qualifier("jazzMusic") Music music3) {
 		super();
-		this.classicalMusic = classicalMusic;
-		this.rockMusic = rockMusic;
-		this.jazzMusic = jazzMusic;
+		this.music1 = music1;
+		this.music2 = music2;
+		this.music3 = music3;
 	}
 
-	public String playMusic() {
-		return "Playing "  + classicalMusic.getSong();
-//		System.out.println("Playing"  + classicalMusic.getSong());
-//		System.out.println("Playing"  + rockMusic.getSong());
-//		System.out.println("Playing"  + jazzMusic.getSong());
-	}
+	public String playMusic(MusicGenres genre) {
+		switch (genre) {
+		case CLASSICAL:
+			return music1.getSongs().get(rand.nextInt(3));
+		case ROCK:
+			return music2.getSongs().get(rand.nextInt(3));
+		case JAZZ:
+			return music3.getSongs().get(rand.nextInt(3));
 
-//	@Autowired
-//	public void setMusic(Music music) {
-//		this.music = music;
-//	}
-	
-	
+		}
+		return "";
+	}	
 }
