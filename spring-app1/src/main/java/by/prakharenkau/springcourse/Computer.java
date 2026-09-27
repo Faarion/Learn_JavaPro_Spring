@@ -1,15 +1,10 @@
 package by.prakharenkau.springcourse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-@Component
 public class Computer {
 
 	private int id;
 	private MusicPlayer musicPlayer;
 	
-	@Autowired
 	public Computer(MusicPlayer musicPlayer) {
 		super();
 		this.id = 1;
@@ -18,8 +13,8 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer " + id + " " + musicPlayer.playMusic(MusicGenres.ROCK);
+		Music music = musicPlayer.playMusic();
+		return "Computer " + id + ". " + music +
+				" - " + music.getSong();
 	}
-	
-	
 }

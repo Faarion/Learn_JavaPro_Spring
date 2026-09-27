@@ -2,13 +2,14 @@ package by.prakharenkau.springcourse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class JazzMusic implements Music {
 	
 	private List<String> musics = new ArrayList<String>();
+	private Random rand = new Random();
 	
 	public JazzMusic() {
 		super();
@@ -18,7 +19,13 @@ public class JazzMusic implements Music {
 	}
 
 	@Override
-	public List getSongs() {
-		return musics;
+	public String getSong() {
+		int i = rand.nextInt(musics.size());
+		return musics.get(i);
+	}
+	
+	@Override
+	public String toString() {
+		return "Genres: Jazz Music";
 	}
 }

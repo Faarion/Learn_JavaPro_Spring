@@ -2,16 +2,15 @@ package by.prakharenkau.springcourse;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.stereotype.Component;
+import java.util.Random;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
-@Component
 public class ClassicalMusic implements Music{
 	
-	private List<String> musics = new ArrayList<String>();	
+	private List<String> musics = new ArrayList<String>();
+	private Random rand = new Random();
 	
 	public ClassicalMusic() {
 		super();
@@ -31,7 +30,15 @@ public class ClassicalMusic implements Music{
 	}
 	
 	@Override
-	public List<String> getSongs() {
-		return musics;
+	public String getSong() {
+		int i = rand.nextInt(musics.size());
+		return musics.get(i);
 	}
+
+	@Override
+	public String toString() {
+		return "Genres: Classical Music";
+	}
+	
+	
 }
