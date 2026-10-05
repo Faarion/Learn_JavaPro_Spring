@@ -11,6 +11,10 @@ public class Person {
 		this.name = name;
 	}
 
+	public Person() {
+		super();
+	}
+
 	public int getId() {
 		return id;
 	}
