@@ -28,7 +28,7 @@ public class PeopleController {
 		this.personDAO = personDAO;
 	}
 
-	@GetMapping("/index")
+	@GetMapping("")
 	public String index(Model model) {
 		model.addAttribute("people", personDAO.index());
 		return "people/index";
@@ -52,7 +52,7 @@ public class PeopleController {
 			return "people/new";
 		}
 		personDAO.save(person);
-		return "redirect:/people/index";
+		return "redirect:/people";
 	}
 	
 	@GetMapping("/{id}/edit")
@@ -68,12 +68,12 @@ public class PeopleController {
 			return "people/edit";
 		}
 		personDAO.update(id, person);
-		return "redirect:/people/index";
+		return "redirect:/people";
 	}
 	
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable("id") int id) {
 		personDAO.delete(id);
-		return "redirect:/people/index";
+		return "redirect:/people";
 	}
 }

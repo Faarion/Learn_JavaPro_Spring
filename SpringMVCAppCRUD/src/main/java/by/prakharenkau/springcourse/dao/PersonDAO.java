@@ -3,7 +3,6 @@ package by.prakharenkau.springcourse.dao;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class PersonDAO {
 	}
 
 	public void save(Person person) {
-		jdbcTemplate.update("INSERT INTO Person VALUES (1, ?, ?, ?)", 
+		jdbcTemplate.update("INSERT INTO Person (name, age, email) VALUES (?, ?, ?)", 
 				person.getName(), person.getAge(), person.getEmail());
 	}
 

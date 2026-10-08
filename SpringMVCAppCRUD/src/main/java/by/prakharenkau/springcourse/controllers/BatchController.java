@@ -27,13 +27,13 @@ public class BatchController {
 	@GetMapping("/without")
 	public String withoutBatch() {
 		personDAO.testMultipleUpdate();
-		return "redirect:/test-batch-update";
+		return "redirect:/people";
 	}
 	
 	@GetMapping("/with")
 	public String withBatch() {
 		personDAO.testBatchUpdate();
-		return "redirect:/test-batch-update";
+		return "redirect:/people";
 	}
 	
 	
