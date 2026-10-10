@@ -4,8 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,10 +31,27 @@ public class PersonDAO {
 				new BeanPropertyRowMapper<Person>(Person.class));
 	}
 	
-	public Person show(int id) {
-		return jdbcTemplate.queryForObject(
-				"SELECT * FROM Person WHERE id = ?",
-				new BeanPropertyRowMapper<Person>(Person.class), id);
+	public Optional<Person> show(String email) {
+		try {
+			Person person = jdbcTemplate.queryForObject(
+					"SELECT * FROM Person WHERE email = ?",
+					new BeanPropertyRowMapper<Person>(Person.class), email);			
+					return Optional.of(person);
+		}
+		catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
+	}
+	
+	public Optional<Person> show(int id) {
+		try {
+			Person person = jdbcTemplate.queryForObject(
+					"SELECT * FROM Person WHERE id = ?",
+					new BeanPropertyRowMapper<Person>(Person.class), id);
+			return Optional.of(person);
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
 	}
 
 	public void save(Person person) {
