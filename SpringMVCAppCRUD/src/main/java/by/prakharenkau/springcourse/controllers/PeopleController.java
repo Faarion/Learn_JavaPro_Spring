@@ -1,6 +1,7 @@
 package by.prakharenkau.springcourse.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import by.prakharenkau.springcourse.dao.PersonDAO;
 import by.prakharenkau.springcourse.models.Person;
@@ -39,7 +41,10 @@ public class PeopleController {
 	
 	@GetMapping("/{id}")
 	public String show(@PathVariable("id") int id, Model model) {
-		model.addAttribute("person", personDAO.show(id));
+		Person person = personDAO.show(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+						"Person not found"));
+		model.addAttribute("person", person);
 		return "people/show";	
 	}
 	
