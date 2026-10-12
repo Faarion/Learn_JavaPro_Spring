@@ -1,6 +1,13 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,linux,windows,eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,linux,windows,eclipse
 
+### SonarLint ###
+.sonarlint/
+target/
+### APP FILES ###
+
+database.properties
+
 ### Eclipse ###
 .metadata
 bin/
