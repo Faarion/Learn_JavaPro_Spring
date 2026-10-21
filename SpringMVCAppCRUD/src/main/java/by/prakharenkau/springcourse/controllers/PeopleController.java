@@ -67,7 +67,10 @@ public class PeopleController {
 	
 	@GetMapping("/{id}/edit")
 	public String edit(Model model, @PathVariable("id") int id) {
-		model.addAttribute("person", personDAO.show(id));
+		Person person = personDAO.show(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+						"Person not found"));
+		model.addAttribute("person", person);
 		return "people/edit";
 	}
 	
